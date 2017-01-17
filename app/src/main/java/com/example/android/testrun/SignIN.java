@@ -16,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,7 +38,7 @@ public class SignIN extends AppCompatActivity implements Button.OnClickListener 
     private FirebaseAuth.AuthStateListener mAuthListener;
     // [END declare_auth_listener]
     private GoogleApiClient mGoogleApiClient;
-    Button signButton;
+    SignInButton signButton;
     ProgressBar bar;
 
 
@@ -48,7 +49,8 @@ public class SignIN extends AppCompatActivity implements Button.OnClickListener 
 
         bar = (ProgressBar)findViewById(R.id.progressBar2);
         bar.setVisibility(View.GONE);
-        signButton = (Button)findViewById(R.id.googlebtnlog);
+        signButton = (SignInButton) findViewById(R.id.googlebtnlog);
+        signButton.setSize(SignInButton.SIZE_STANDARD);
         signButton.setOnClickListener(this);
 
         // [START config_signin]
@@ -88,6 +90,7 @@ public class SignIN extends AppCompatActivity implements Button.OnClickListener 
             } else {
                 // Google Sign In failed, update UI appropriately
                 // [START_EXCLUDE]
+                Toast.makeText(SignIN.this, "Something went wrong, try again",Toast.LENGTH_LONG).show();
                 //updateUI(null);
                 // [END_EXCLUDE]
             }
@@ -117,6 +120,8 @@ public class SignIN extends AppCompatActivity implements Button.OnClickListener 
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(SignIN.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            bar.setVisibility(View.INVISIBLE);
+
                         }
                         else
                         {
@@ -157,5 +162,13 @@ public class SignIN extends AppCompatActivity implements Button.OnClickListener 
 
             signIn();
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    { super.onBackPressed(); // optional //you may put your intent here, putExtra, startActivity
+
+        finish();
+        startActivity(getIntent());
     }
 }

@@ -43,25 +43,22 @@
 
 
 
-
         </android.support.design.widget.CollapsingToolbarLayout>
 
 
     </android.support.design.widget.AppBarLayout>
 
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/bottom_sheet_behavior"
-        android:id="@+id/nestedScrollView">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingTop="24dp"
-            android:weightSum="1">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:weightSum="1"
+            android:id="@+id/linearLayout2">
 
 
             <Button
@@ -96,15 +93,26 @@
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabmain"
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        android:clickable="true"
+        android:layout_gravity="center_vertical|center_horizontal"
+        app:srcCompat="@android:drawable/button_onoff_indicator_off"
+        app:layout_anchor="@+id/MyappBar"
+        app:layout_anchorGravity="bottom|right" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|left"
+        android:layout_height="52dp"
+        android:clickable="true"
+        android:visibility="invisible"
         app:srcCompat="@android:drawable/btn_dialog"
-        app:layout_anchor="@+id/nestedScrollView"
-        app:layout_anchorGravity="center_vertical|right" />
+        app:layout_anchor="@+id/MyappBar"
+        app:layout_anchorGravity="center_vertical|right"
+        android:layout_gravity="bottom|left" />
+
 
 </android.support.design.widget.CoordinatorLayout>

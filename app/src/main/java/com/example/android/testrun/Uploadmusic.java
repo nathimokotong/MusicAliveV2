@@ -1,53 +1,63 @@
 package com.example.android.testrun;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.EOFException;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Map;
 
-public class Blah extends AppCompatActivity  {
+public class Uploadmusic extends AppCompatActivity  {
 
+    final static String DB_URL = "https://console.firebase.google.com/project/testrun-75be8/database/data";
     private static final int PICKFILE_RESULT_CODE = 1001;
     private StorageReference mStorageRef;
     ImageButton openButton;
     ImageButton BTNplay;
     ImageButton upload;
-    Button addnew;
+    Button addnew,btnsongs;
     UploadTask uploadTask;
     TextView foundpath, test, uploadtxt;
     String songdisplay;
@@ -55,10 +65,16 @@ public class Blah extends AppCompatActivity  {
     private String[] mPath;
     private String[] mMusic;
     ProgressBar bar;
+    String username;
     MotherClass motherClass;
     Uri douwnloadURI;
     CountDownTimer timer = null;
     String cat;
+    DatabaseReference db;
+    ArrayList<String> songlist = new ArrayList<>();
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    SharedPreferences preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,17 +87,32 @@ public class Blah extends AppCompatActivity  {
         foundpath = (TextView) findViewById(R.id.pathfound);
         uploadtxt = (TextView)findViewById(R.id.txtupload);
         addnew = (Button)findViewById(R.id.btnAddnew);
+        btnsongs = (Button)findViewById(R.id.btnMySongz);
         test = (TextView) findViewById(R.id.txtAudioTest);
+
         test.setVisibility(View.GONE);
         bar.setVisibility(View.GONE);
         uploadtxt.setVisibility(View.GONE);
         BTNplay.setVisibility(View.GONE);
         upload.setVisibility(View.GONE);
 
+        db = FirebaseDatabase.getInstance().getReference();
+
+
+
         motherClass = new MotherClass();
 
 
 
+        preferences = getSharedPreferences("User",0);
+
+        username = preferences.getString("username","not answered");
+
+
+
+
+
+//_____________________Button click
         openButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +142,7 @@ public class Blah extends AppCompatActivity  {
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Blah.this, "can not upload song", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Uploadmusic.this, "can not upload song", Toast.LENGTH_SHORT).show();
                         bar.setVisibility(View.GONE);
                     }
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -119,10 +150,16 @@ public class Blah extends AppCompatActivity  {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         BTNplay.setVisibility(View.VISIBLE);
                         douwnloadURI = taskSnapshot.getDownloadUrl();
-                        Toast.makeText(Blah.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Uploadmusic.this, "Upload successful " , Toast.LENGTH_SHORT).show();
                         bar.setVisibility(View.GONE);
                         test.setVisibility(View.VISIBLE);
                         upload.setClickable(false);
+
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        motherClass.writeCat(cat,songdisplay,douwnloadURI);
+                        motherClass.writeArtist(user.getDisplayName(),user.getEmail(),songdisplay,douwnloadURI);
+
                     }
                 });
 
@@ -136,12 +173,17 @@ public class Blah extends AppCompatActivity  {
 
 
 
-                Toast.makeText(Blah.this,"Review will stop in 20 seconds",Toast.LENGTH_SHORT).show();
-                    BTNplay.setImageResource(R.drawable.ic_pause_black_24dp);
 
-                    motherClass.playsong(douwnloadURI);
+                BTNplay.setImageResource(R.drawable.ic_pause_black_24dp);
 
-                timer = new CountDownTimer(20000,1000) {
+                int time = motherClass.getDuration(douwnloadURI);
+                int sec = (int) ((time / 1000) % 60);
+                motherClass.playsong(douwnloadURI,time);
+
+                Toast.makeText(Uploadmusic.this,"Review will stop in "+ Integer.toString(sec) +" seconds",Toast.LENGTH_SHORT).show();
+
+                if(sec >= 20)
+                {timer = new CountDownTimer(20000,1000) {
                     @Override
                     public void onTick(long l) {
 
@@ -151,6 +193,23 @@ public class Blah extends AppCompatActivity  {
                         BTNplay.setImageResource(R.drawable.ic_play_arrow_black_24dp);
                     }
                 }.start();
+                }
+
+                if(sec < 20)
+                {
+                    sec = sec * 1000;
+                    timer = new CountDownTimer(sec,1000) {
+                        @Override
+                        public void onTick(long l) {
+
+                        }
+                        @Override
+                        public void onFinish() {
+                            BTNplay.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+                        }
+                    }.start();
+                }
+
 
 
             }
@@ -160,14 +219,30 @@ public class Blah extends AppCompatActivity  {
         addnew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                addnew.startAnimation(didTapButton());
                 test.setVisibility(View.GONE);
                 bar.setVisibility(View.GONE);
                 BTNplay.setVisibility(View.GONE);
                 upload.setVisibility(View.GONE);
                 uploadtxt.setVisibility(View.GONE);
                 openButton.setClickable(true);
+                upload.setClickable(false);
                 songdisplay = "";
 
+            }
+        });
+
+            //displaying songs
+        btnsongs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                btnsongs.startAnimation(didTapButton());
+               // mySongs();
+
+                Intent intent = new Intent(Uploadmusic.this,Artistmenu.class);
+                startActivity(intent);
             }
         });
 
@@ -177,29 +252,47 @@ public class Blah extends AppCompatActivity  {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 // TODO Auto-generated method stub
-        Uri selectedImageUri = data.getData();
-        String[] projection = {MediaStore.Audio.Media.DISPLAY_NAME};
-        switch (requestCode) {
-            case PICKFILE_RESULT_CODE:
-                if (resultCode == RESULT_OK) {
 
-                    setCat();
-                    Cursor cursor = getContentResolver().query(selectedImageUri, projection, null, null, null);
-                    cursor.moveToFirst();
-                    int columnIndex = cursor.getColumnIndex(projection[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    FilePath = getFirebaseURIparth(picturePath);
-                    openButton.setClickable(false);
-                    upload.setVisibility(View.VISIBLE);
-                    uploadtxt.setVisibility(View.VISIBLE);
-                }
-                if (requestCode == RESULT_CANCELED) {
+        try{
+            Uri selectedImageUri = data.getData();
+            //open a select gallery to choose file to be uploaded
+            String[] projection = {MediaStore.Audio.Media.DISPLAY_NAME};
+            switch (requestCode) {
+                case PICKFILE_RESULT_CODE:
 
-                }
-                break;
+                    if (resultCode == RESULT_OK) {
+
+                        setCat();
+                        Cursor cursor = getContentResolver().query(selectedImageUri, projection, null, null, null);
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(projection[0]);
+                        String picturePath = cursor.getString(columnIndex);
+                        cursor.close();
+                        FilePath = getFirebaseURIparth(picturePath);
+                        openButton.setClickable(false);
+                        upload.setVisibility(View.VISIBLE);
+                        uploadtxt.setVisibility(View.VISIBLE);
+                        upload.setClickable(true);
+                    }
+                    if (requestCode == RESULT_CANCELED) {
+
+                        upload.setVisibility(View.GONE);
+                        //refresh activity if backpress
+
+                    }
+                    break;
+
+            }
+
+
 
         }
+        catch (Exception e)
+        {
+
+        }
+
+
     }
 
 
@@ -269,19 +362,19 @@ public class Blah extends AppCompatActivity  {
                 blink();
                 break;
             }
-
         }
 
         return uriPath;
     }
 
 
+    //display category for user to select
     private void setCat()
     {
         final String[] names = {"Kwaito" ,"Hip Hop" ,"RnB" ,"House" ,"Jazz and Soul" ,"Mgqashiyo and Isicathamiya" ,"Rock" ,"Reggae" ,"Afrikaans music" ,"Gospel" ,"traditional"};
 
 
-        final AlertDialog.Builder builder1 = new AlertDialog.Builder(Blah.this);
+        final AlertDialog.Builder builder1 = new AlertDialog.Builder(Uploadmusic.this);
         builder1.setTitle("Genre");
         builder1.setItems(names, new DialogInterface.OnClickListener() {
             @Override
@@ -339,6 +432,97 @@ public class Blah extends AppCompatActivity  {
             }
         }).start();
     }
+
+
+
+//_______________________Retrieve users songs
+
+
+
+
+    private void mySongs()
+    {
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference usersRef = database.getReference();
+
+        usersRef.child(username).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //get all the children at this level to loop
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+
+                //shake hands with each
+                for(DataSnapshot child: children)
+                {
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+    }
+
+    private void getUpdates(DataSnapshot dataSnapshot)
+    {
+
+        songlist.clear();
+
+        for(DataSnapshot data : dataSnapshot.getChildren())
+        {
+
+            Songs s = (Songs) data.getValue(Songs.class);
+           //Songs s = new Songs();
+            //   get Name of song and set it to object
+            //s.setName(data.getValue(Songs.class).getName());songlist.add(s.getName());
+
+            Log.v("TAG",s.getName());
+
+        }
+
+        if(songlist.size() > 0)
+        {
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(Uploadmusic.this);
+            LayoutInflater inflater = getLayoutInflater();
+            View convertView = (View) inflater.inflate(R.layout.songlist, null);
+            alertDialog.setView(convertView);
+            alertDialog.setTitle("Song List");
+            ListView lv = (ListView) convertView.findViewById(R.id.listView1);
+            ArrayAdapter adapter = new ArrayAdapter(Uploadmusic.this,android.R.layout.simple_list_item_1,songlist);
+            lv.setAdapter(adapter);
+            alertDialog.show();
+
+        }
+        else
+        {
+            Toast.makeText(this,"You have no songs",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    //_____________________animation______________________
+    public Animation didTapButton() {
+
+
+        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+        myAnim.setInterpolator(interpolator);
+
+        return myAnim;
+    }
+
+
+
 
 }
 

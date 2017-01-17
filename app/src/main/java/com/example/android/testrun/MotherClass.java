@@ -9,10 +9,19 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.CountDownTimer;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+
 
 import java.io.IOException;
 
@@ -24,29 +33,37 @@ public class MotherClass {
 
 
     String gnr;
-    private int PICKFILE_RESULT_CODE;
-
+  //  private int PICKFILE_RESULT_CODE;
+    private int x;
     Activity activity;
 
     public  MotherClass()
     {
 
-        PICKFILE_RESULT_CODE = 1001 ;
+
 
 
     }
 
-    public void popup()
-    {
+//    public  MotherClass(int i)
+//    {
+//
+//        PICKFILE_RESULT_CODE = 1001 ;
+//
+//
+//    }
 
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("audio/mpeg");
-        activity.startActivityForResult(intent,PICKFILE_RESULT_CODE);
-    }
+//    public void popup()
+//    {
+//
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setType("audio/mpeg");
+//        activity.startActivityForResult(intent,PICKFILE_RESULT_CODE);
+//    }
 
 
 
-    public void playsong(Uri pathofsong)
+    public void playsong(Uri pathofsong, int t)
     {
 
 
@@ -61,7 +78,10 @@ public class MotherClass {
             mediaplayer.prepare();
             mediaplayer.start();
 
-            timer = new CountDownTimer(20000,1000) {
+            final int dur = mediaplayer.getDuration();
+
+            if (t >=  20000)
+            {   timer = new CountDownTimer(20000,1000) {
                 @Override
                 public void onTick(long l) {
 
@@ -72,6 +92,26 @@ public class MotherClass {
                     mediaplayer.stop();
                 }
             }.start();
+            }
+
+            if(t < 20000)
+            {
+                int sec = (int) ((t / 1000) % 60);
+                sec = sec * 1000;
+                timer = new CountDownTimer(sec,1000) {
+                    @Override
+                    public void onTick(long l) {
+
+                    }
+                    @Override
+                    public void onFinish()
+                    {
+                        mediaplayer.stop();
+                    }
+                }.start();
+
+            }
+
 
 
 
@@ -92,7 +132,77 @@ public class MotherClass {
     }
 
 
+    public int getDuration(Uri path)
+    {
 
+
+        try {
+            final String pathsss = path.toString();
+            final MediaPlayer mediaplayer = new MediaPlayer();
+            mediaplayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaplayer.reset();
+            mediaplayer.setDataSource(pathsss);
+            x = mediaplayer.getDuration();
+
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        return x;
+    }
+
+
+public void writeCat(String gen, String songnm, Uri downloaduri)
+{
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference();
+    DatabaseReference usersRef = ref.child("Genre").child(gen);
+    usersRef.push().setValue(new Gendre(songnm,downloaduri.toString()));
+
+}
+
+    public void writeArtist(String name, String email,String songnm, Uri downloaduri)
+    {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+        DatabaseReference usersRef = ref.child("Artist").child(name);
+        usersRef.push().setValue(new Gendre(email,songnm,downloaduri.toString()));
+
+    }
+
+
+
+
+    //_____________________animation______________________
+    public Animation didTapButton(Context context) {
+
+
+        final Animation myAnim = AnimationUtils.loadAnimation(context, R.anim.bounce);
+        MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+        myAnim.setInterpolator(interpolator);
+
+        return myAnim;
+    }
+
+    public void rotateFabForward(FloatingActionButton fab) {
+        ViewCompat.animate(fab)
+                .rotation(135.0F)
+                .withLayer()
+                .setDuration(300L)
+                .setInterpolator(new OvershootInterpolator(10.0F))
+                .start();
+    }
+
+    public void rotateFabBackward(FloatingActionButton fab) {
+        ViewCompat.animate(fab)
+                .rotation(0.0F)
+                .withLayer()
+                .setDuration(300L)
+                .setInterpolator(new OvershootInterpolator(10.0F))
+                .start();
+    }
 
 
 }

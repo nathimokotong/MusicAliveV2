@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestRun</string>
+    <string name="app_name">Music Alive</string>
     <string name="music_menu">Music Gallery</string>
     <string name="music_upload">Upload Songs</string>
     <string name="music_rating">Top Ratings</string>

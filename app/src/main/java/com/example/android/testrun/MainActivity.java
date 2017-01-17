@@ -3,7 +3,9 @@ package com.example.android.testrun;
 import android.app.Activity;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -13,12 +15,16 @@ import android.os.CountDownTimer;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +39,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.auth.api.signin.SignInAccount;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -62,13 +70,19 @@ public class MainActivity extends AppCompatActivity implements
     // [START declare_auth_listener]
     private FirebaseAuth.AuthStateListener mAuthListener;
     // [END declare_auth_listener]
-TextView username;
+    String username;
     private GoogleApiClient mGoogleApiClient;
     CountDownTimer timer = null;
 
     Button Musicbtn;
     Button MusicUplbtn;
     Button MusicRatBtn;
+
+    //FloatingActionMenu materialDesignFAM;
+    FloatingActionButton fABmain;
+    FloatingActionButton fabsign;
+    //floating button bool
+    Boolean isOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +96,12 @@ TextView username;
         MusicRatBtn = (Button) findViewById(R.id.Btnrating);
 
         Musicbtn.startAnimation(myAnim);
-        MusicUplbtn.startAnimation(myAnim);;
-        MusicRatBtn.startAnimation(myAnim);;
+        MusicUplbtn.startAnimation(myAnim);
+        MusicRatBtn.startAnimation(myAnim);
+
+        Musicbtn.setClickable(true);
+        MusicUplbtn.setClickable(true);
+        MusicRatBtn.setClickable(true);
 
         final Animation clic = didTapButton();
 
@@ -116,7 +134,7 @@ TextView username;
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
 
-
+                username = user.getDisplayName();
                 } else {
 
                     Intent intent = new Intent(MainActivity.this, SignIN.class);
@@ -137,6 +155,9 @@ TextView username;
             public void onClick(View view) {
 
                 Musicbtn.startAnimation(clic);
+                Musicbtn.setClickable(false);
+                MusicUplbtn.setClickable(false);
+                MusicRatBtn.setClickable(false);
                 timer = new CountDownTimer(3000,1000) {
                     @Override
                     public void onTick(long l) {
@@ -144,8 +165,8 @@ TextView username;
                     }
                     @Override
                     public void onFinish() {
-                   //     Intent intent = new Intent(MainActivity.this,Upload.class);
-                  //      startActivity(intent);
+                        Intent intent = new Intent(MainActivity.this,MusicGallery.class);
+                       startActivity(intent);
                     }
                 }.start();
 
@@ -157,6 +178,9 @@ TextView username;
             public void onClick(View view) {
 
                 MusicRatBtn.startAnimation(clic);
+                Musicbtn.setClickable(false);
+                MusicUplbtn.setClickable(false);
+                MusicRatBtn.setClickable(false);
                 timer = new CountDownTimer(3000,1000) {
                     @Override
                     public void onTick(long l) {
@@ -176,6 +200,9 @@ TextView username;
             @Override
             public void onClick(View view) {
                 MusicUplbtn.startAnimation(clic);
+                Musicbtn.setClickable(false);
+                MusicUplbtn.setClickable(false);
+                MusicRatBtn.setClickable(false);
                 timer = new CountDownTimer(3000,1000) {
                     @Override
                     public void onTick(long l) {
@@ -183,7 +210,13 @@ TextView username;
                     }
                     @Override
                     public void onFinish() {
-                        Intent intent = new Intent(MainActivity.this,Blah.class);
+
+                        SharedPreferences preferences = getSharedPreferences("User",0);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("username",username);
+                        editor.commit();
+
+                        Intent intent = new Intent(MainActivity.this,Uploadmusic.class);
                         startActivity(intent);
                     }
                 }.start();
@@ -191,6 +224,42 @@ TextView username;
             }
         });
 
+        //_______________________floating buttons_________________________________
+
+        fABmain = (FloatingActionButton)findViewById(R.id.fabmain);
+        fabsign = (FloatingActionButton)findViewById(R.id.fab);
+
+        fABmain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+                if(isOpen)
+                {
+                    rotateFabBackward(fABmain);
+                    fabsign.setClickable(false);
+                    fabsign.setVisibility(View.INVISIBLE);
+                    isOpen = false;
+                }
+                else {
+                    rotateFabForward(fABmain);
+                    fabsign.startAnimation(myAnim);
+                    fabsign.setClickable(true);
+                    fabsign.setVisibility(View.VISIBLE);
+
+                    isOpen = true;
+                }
+            }
+        });
+
+
+        fabsign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                useroption();
+            }
+        });
 
 
     }
@@ -229,7 +298,7 @@ TextView username;
 
         if (user != null) {
          //   username = (TextView)findViewById(R.id.usernameTxt);
-            username.setText(user.getDisplayName());
+           // username.setText(user.getDisplayName());
         } else {
 
            // findViewById(R.id.usernameTxt).setVisibility(View.VISIBLE);
@@ -241,6 +310,38 @@ TextView username;
 
     //________________________________________________________________________
 
+
+    //__________________________sign out-___________________________________
+    private void signOut() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google sign out
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        updateUI(null);
+                    }
+                });
+    }
+
+    private void revokeAccess() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google revoke access
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        updateUI(null);
+                    }
+                });
+    }
+
+
+    //_____________________animation______________________
     public Animation didTapButton() {
 
 
@@ -251,7 +352,25 @@ TextView username;
         return myAnim;
     }
 
+    public void rotateFabForward(FloatingActionButton fab) {
+        ViewCompat.animate(fab)
+                .rotation(135.0F)
+                .withLayer()
+                .setDuration(300L)
+                .setInterpolator(new OvershootInterpolator(10.0F))
+                .start();
+    }
 
+    public void rotateFabBackward(FloatingActionButton fab) {
+        ViewCompat.animate(fab)
+                .rotation(0.0F)
+                .withLayer()
+                .setDuration(300L)
+                .setInterpolator(new OvershootInterpolator(10.0F))
+                .start();
+    }
+
+//__________________________________________________________
 
 
     @Override
@@ -276,4 +395,42 @@ TextView username;
                 .setActionStatus(Action.STATUS_TYPE_COMPLETED)
                 .build();
     }
+
+    //___________________________user sign out
+    public void useroption()
+    {
+
+        final AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage("Would you like to sign out ?");
+        builder1.setCancelable(true);
+        builder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                signOut();
+                Intent intent = new Intent(MainActivity.this, SignIN.class);
+                startActivity(intent);
+            }
+        });
+
+        builder1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                builder1.setCancelable(true);
+            }
+        });
+
+        builder1.show();
+    }
+
+    //___________________________________________________
+@Override
+public void onBackPressed()
+{ super.onBackPressed(); // optional //you may put your intent here, putExtra, startActivity
+
+    finish();
+    startActivity(getIntent());
+ }
+
 }

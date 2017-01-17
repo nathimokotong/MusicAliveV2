@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/activity_main"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/colorblack"
-tools:context="com.example.android.testrun.MainActivity"
+    tools:context="com.example.android.testrun.MainActivity"
     android:weightSum="1">
 
 
@@ -100,6 +101,14 @@ tools:context="com.example.android.testrun.MainActivity"
         android:layout_height="wrap_content"
         android:background="@color/cardview_light_background"
         android:id="@+id/btnAddnew" />
+
+    <Button
+        android:text="My songs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        android:id="@+id/btnMySongz" />
+
 
 
 </LinearLayout>
