@@ -14,5 +14,6 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:layout_marginLeft="10dp"
-        android:id="@+id/txtchilditem" />
+        android:id="@+id/txtchilditem"
+        />
 </LinearLayout>
