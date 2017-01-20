@@ -42,7 +42,6 @@
             </android.support.v7.widget.Toolbar>
 
 
-
         </android.support.design.widget.CollapsingToolbarLayout>
 
 
@@ -51,7 +50,7 @@
 
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -62,57 +61,45 @@
 
 
             <Button
+                android:id="@+id/BtnSign"
+                android:layout_width="170dp"
+                android:layout_height="92dp"
+                android:text="@string/sign_out"
+                android:background="@color/colorgray"
+                android:layout_alignTop="@+id/Btnrating"
+                android:layout_alignParentEnd="true" />
+
+            <Button
                 android:id="@+id/BtnMusicGal"
-                android:layout_width="match_parent"
+                android:layout_width="168dp"
                 android:layout_height="92dp"
                 android:text="@string/music_menu"
-                android:layout_centerHorizontal="true"
                 android:textColor="@color/colorgray"
                 android:background="@color/cardview_dark_background"
-                android:layout_weight="0.65" />
+                android:layout_alignTop="@+id/Btnupload"
+                android:layout_alignParentEnd="true" />
 
             <Button
                 android:id="@+id/Btnupload"
-                android:layout_width="match_parent"
+                android:layout_width="170dp"
                 android:layout_height="92dp"
                 android:text="@string/music_upload"
-                android:layout_centerHorizontal="true"
                 android:background="@color/colorgray"
-                android:layout_weight="0.65" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="27dp" />
 
             <Button
                 android:id="@+id/Btnrating"
-                android:layout_width="match_parent"
+                android:layout_width="172dp"
                 android:layout_height="92dp"
                 android:textColor="@color/colorgray"
                 android:text="@string/music_rating"
-                android:layout_centerHorizontal="true"
                 android:background="@color/cardview_dark_background"
-                android:layout_weight="0.65" />
+                android:layout_below="@+id/Btnupload"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="36dp" />
 
-
-        </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabmain"
-        android:layout_width="wrap_content"
-        android:layout_height="52dp"
-        android:clickable="true"
-        android:layout_gravity="center_vertical|center_horizontal"
-        app:srcCompat="@android:drawable/button_onoff_indicator_off"
-        app:layout_anchor="@+id/MyappBar"
-        app:layout_anchorGravity="bottom|right" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="52dp"
-        android:clickable="true"
-        android:visibility="invisible"
-        app:srcCompat="@android:drawable/btn_dialog"
-        app:layout_anchor="@+id/MyappBar"
-        app:layout_anchorGravity="center_vertical|right"
-        android:layout_gravity="bottom|left" />
-
+        </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

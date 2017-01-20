@@ -1,26 +1,23 @@
 package com.example.android.testrun.Data;
 
+import java.io.Serializable;
+
 /**
  * Created by Manto on 16-Jan-17.
  */
 
-public class Artist {
+public class Artist implements Serializable {
 
-    private String downloadlink;
-    private String email;
-    private  String songname;
+    public String downloadu;
+    public String email;
+    public   String songName;
 
-    public Artist()
-    {
-
+    public String getDownloadu() {
+        return downloadu;
     }
 
-    public String getDownloadlink() {
-        return downloadlink;
-    }
-
-    public void setDownloadlink(String downloadlink) {
-        this.downloadlink = downloadlink;
+    public void setDownloadu(String downloadu) {
+        this.downloadu = downloadu;
     }
 
     public String getEmail() {
@@ -31,11 +28,27 @@ public class Artist {
         this.email = email;
     }
 
-    public String getSongname() {
-        return songname;
+    public String getSongName() {
+        return songName;
     }
 
-    public void setSongname(String songname) {
-        this.songname = songname;
+    public void setSongName(String songName) {
+        this.songName = songName;
+    }
+
+    public Artist()
+    {
+        super();
+    }
+
+
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "downloadu='" + downloadu + '\'' +
+                ", email='" + email + '\'' +
+                ", songname='" + songName + '\'' +
+                '}';
     }
 }
+

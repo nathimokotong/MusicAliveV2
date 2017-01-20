@@ -32,11 +32,6 @@
             android:label="Upload Music"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Artistmenu"
-            android:label="My Music"
-            android:parentActivityName=".Uploadmusic"
-            android:screenOrientation="portrait" />
 
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -50,7 +45,7 @@
             android:name=".MusicGallery"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".Artistmenu"></activity>
     </application>
 
 </manifest>

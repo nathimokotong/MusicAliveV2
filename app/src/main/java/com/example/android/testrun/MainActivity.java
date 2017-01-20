@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements
     Button Musicbtn;
     Button MusicUplbtn;
     Button MusicRatBtn;
-
+    Button SignBtn;
     //FloatingActionMenu materialDesignFAM;
     FloatingActionButton fABmain;
     FloatingActionButton fabsign;
@@ -94,14 +94,17 @@ public class MainActivity extends AppCompatActivity implements
         Musicbtn = (Button) findViewById(R.id.BtnMusicGal);
         MusicUplbtn = (Button) findViewById(R.id.Btnupload);
         MusicRatBtn = (Button) findViewById(R.id.Btnrating);
+        SignBtn = (Button) findViewById(R.id.BtnSign);
 
         Musicbtn.startAnimation(myAnim);
         MusicUplbtn.startAnimation(myAnim);
         MusicRatBtn.startAnimation(myAnim);
+        SignBtn.startAnimation(myAnim);
 
         Musicbtn.setClickable(true);
         MusicUplbtn.setClickable(true);
         MusicRatBtn.setClickable(true);
+        SignBtn.setClickable(true);
 
         final Animation clic = didTapButton();
 
@@ -158,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements
                 Musicbtn.setClickable(false);
                 MusicUplbtn.setClickable(false);
                 MusicRatBtn.setClickable(false);
+                SignBtn.setClickable(false);
                 timer = new CountDownTimer(3000,1000) {
                     @Override
                     public void onTick(long l) {
@@ -181,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements
                 Musicbtn.setClickable(false);
                 MusicUplbtn.setClickable(false);
                 MusicRatBtn.setClickable(false);
+                SignBtn.setClickable(false);
                 timer = new CountDownTimer(3000,1000) {
                     @Override
                     public void onTick(long l) {
@@ -203,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements
                 Musicbtn.setClickable(false);
                 MusicUplbtn.setClickable(false);
                 MusicRatBtn.setClickable(false);
+                SignBtn.setClickable(false);
                 timer = new CountDownTimer(3000,1000) {
                     @Override
                     public void onTick(long l) {
@@ -224,43 +230,56 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
-        //_______________________floating buttons_________________________________
 
-        fABmain = (FloatingActionButton)findViewById(R.id.fabmain);
-        fabsign = (FloatingActionButton)findViewById(R.id.fab);
-
-        fABmain.setOnClickListener(new View.OnClickListener() {
+        SignBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SignBtn.startAnimation(clic);
+                Musicbtn.setClickable(false);
+                MusicUplbtn.setClickable(false);
+                MusicRatBtn.setClickable(false);
 
-
-
-                if(isOpen)
-                {
-                    rotateFabBackward(fABmain);
-                    fabsign.setClickable(false);
-                    fabsign.setVisibility(View.INVISIBLE);
-                    isOpen = false;
-                }
-                else {
-                    rotateFabForward(fABmain);
-                    fabsign.startAnimation(myAnim);
-                    fabsign.setClickable(true);
-                    fabsign.setVisibility(View.VISIBLE);
-
-                    isOpen = true;
-                }
-            }
-        });
-
-
-        fabsign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 useroption();
             }
         });
 
+        //_______________________floating buttons_________________________________
+
+//        fABmain = (FloatingActionButton)findViewById(R.id.fabmain);
+//        fabsign = (FloatingActionButton)findViewById(R.id.fab);
+//
+//        fABmain.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//
+//
+//                if(isOpen)
+//                {
+//                    rotateFabBackward(fABmain);
+//                    fabsign.setClickable(false);
+//                    fabsign.setVisibility(View.INVISIBLE);
+//                    isOpen = false;
+//                }
+//                else {
+//                    rotateFabForward(fABmain);
+//                    fabsign.startAnimation(myAnim);
+//                    fabsign.setClickable(true);
+//                    fabsign.setVisibility(View.VISIBLE);
+//
+//                    isOpen = true;
+//                }
+//            }
+//        });
+//
+//
+//        fabsign.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                useroption();
+//            }
+//        });
+//
 
     }
 //_______________________________Google SIgn in________________________________
@@ -416,7 +435,10 @@ public class MainActivity extends AppCompatActivity implements
         builder1.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                Musicbtn.setClickable(true);
+                MusicUplbtn.setClickable(true);
+                MusicRatBtn.setClickable(true);
+                SignBtn.setClickable(true);
                 builder1.setCancelable(true);
             }
         });
