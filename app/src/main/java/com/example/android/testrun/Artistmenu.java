@@ -44,7 +44,6 @@ public class Artistmenu extends AppCompatActivity {
         setContentView(R.layout.activity_artistmenu);
 
     //Recycler view...............
-        // .............
         recyclerView = (RecyclerView)findViewById(R.id.recycview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
