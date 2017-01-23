@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="210dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="12dp"
+    android:id="@+id/cardview"
     app:cardElevation="10dp"
     android:layout_marginTop="10dp"
     >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="162dp"
+        android:layout_height="180dp"
         android:orientation="vertical"
         >
 
@@ -18,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/songnameID"
+            android:lines="2"
             android:text="song to be displayed here"
             android:layout_margin="10dp"
             android:textSize="15dp"
@@ -73,6 +75,15 @@
             android:layout_alignBottom="@+id/txtDisikes"
             android:layout_alignEnd="@+id/songnameID" />
 
-
+        <ImageButton
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnArtStream"
+            android:background="@color/colorblack"
+            android:src="@drawable/ic_play_arrow_black_24dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/alubcover"
+            android:layout_marginStart="15dp" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

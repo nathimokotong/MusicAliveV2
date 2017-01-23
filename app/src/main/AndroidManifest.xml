@@ -8,7 +8,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/mylogofront"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -45,7 +45,11 @@
             android:name=".MusicGallery"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Artistmenu"></activity>
+        <activity android:name=".Artistmenu"
+            android:label="My music"
+            android:parentActivityName=".Uploadmusic"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

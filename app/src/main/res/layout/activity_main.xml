@@ -29,7 +29,7 @@
                 android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="pin"
-                android:background="@drawable/music"
+                android:background="@drawable/mylogo"
                 />
 
             <android.support.v7.widget.Toolbar
@@ -55,6 +55,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingTop="24dp"
+            android:background="@color/colorgray"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:weightSum="1"
             android:id="@+id/linearLayout2">
@@ -64,6 +65,7 @@
                 android:id="@+id/BtnSign"
                 android:layout_width="170dp"
                 android:layout_height="92dp"
+                android:drawableTop="@drawable/signoutbtn"
                 android:text="@string/sign_out"
                 android:background="@color/colorgray"
                 android:layout_alignTop="@+id/Btnrating"
@@ -73,9 +75,9 @@
                 android:id="@+id/BtnMusicGal"
                 android:layout_width="168dp"
                 android:layout_height="92dp"
+                android:drawableTop="@drawable/musicgalbtn"
                 android:text="@string/music_menu"
-                android:textColor="@color/colorgray"
-                android:background="@color/cardview_dark_background"
+                android:background="@color/colorgray"
                 android:layout_alignTop="@+id/Btnupload"
                 android:layout_alignParentEnd="true" />
 
@@ -83,22 +85,22 @@
                 android:id="@+id/Btnupload"
                 android:layout_width="170dp"
                 android:layout_height="92dp"
+                android:drawableTop="@drawable/uploadmusicbtn"
                 android:text="@string/music_upload"
                 android:background="@color/colorgray"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="27dp" />
+                android:layout_alignParentTop="true" />
 
             <Button
                 android:id="@+id/Btnrating"
                 android:layout_width="172dp"
                 android:layout_height="92dp"
-                android:textColor="@color/colorgray"
+                android:drawableTop="@drawable/topbtn"
+                android:background="@color/colorgray"
                 android:text="@string/music_rating"
-                android:background="@color/cardview_dark_background"
+                android:layout_marginTop="38dp"
                 android:layout_below="@+id/Btnupload"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="36dp" />
+                android:layout_alignEnd="@+id/Btnupload" />
 
         </RelativeLayout>
 

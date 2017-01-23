@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements
         MusicUplbtn = (Button) findViewById(R.id.Btnupload);
         MusicRatBtn = (Button) findViewById(R.id.Btnrating);
         SignBtn = (Button) findViewById(R.id.BtnSign);
+      //  Musicbtn.setBackground(R.drawable.musicgalbtn);
 
         Musicbtn.startAnimation(myAnim);
         MusicUplbtn.startAnimation(myAnim);

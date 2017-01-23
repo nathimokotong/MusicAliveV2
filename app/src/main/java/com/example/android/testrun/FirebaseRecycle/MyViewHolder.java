@@ -22,6 +22,5 @@ public class MyViewHolder extends RecyclerView.ViewHolder
 
         songTxt = (TextView)itemView.findViewById(R.id.songnameID);
 
-
     }
 }
