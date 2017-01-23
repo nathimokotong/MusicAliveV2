@@ -33,6 +33,7 @@ public class Artistmenu extends AppCompatActivity
 {
 
     private RecyclerView recyclerView;
+    RecyclerView rv;
     DatabaseReference reference;
     ItemClickListener itemClickListener;
     String link = "http://pitchfork-cdn.s3.amazonaws.com/longform/381/streaming-2.png";
@@ -40,12 +41,24 @@ public class Artistmenu extends AppCompatActivity
     String streamlink;
     ImageButton streambtn;
     CardView cardView;
+    MyAdapter adapter;
+    FirebaseHelper helper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artistmenu);
+
+    /*    rv = (RecyclerView)findViewById(R.id.recycview);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+
+        //send a Query to the database
+        reference = FirebaseDatabase.getInstance().getReference("Artist").child("Nkosinathi Mokotong");
+        helper = new FirebaseHelper(reference);
+        adapter = new MyAdapter(this,helper.retrieve());
+        rv.setAdapter(adapter);
+*/
 
         Toast.makeText(Artistmenu.this,"Loading your songs may take a while, please be patient!",Toast.LENGTH_LONG).show();
 

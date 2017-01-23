@@ -27,6 +27,7 @@ public class FirebaseHelper {
     //fetch data into arraylist
     private void fetchdata(DataSnapshot dataSnapshot)
     {
+        artists.clear();
 
         for(DataSnapshot ds:dataSnapshot.getChildren())
         {
