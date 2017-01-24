@@ -13,6 +13,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -36,6 +38,10 @@ public class MotherClass {
   //  private int PICKFILE_RESULT_CODE;
     private int x;
     Activity activity;
+
+    private TelephonyManager telephonyManager;
+    private PhoneStateListener phoneStateListener;
+
 
     public  MotherClass()
     {
@@ -131,6 +137,39 @@ public class MotherClass {
 
     }
 
+    public void songplaying(String pathofsong)
+    {
+
+
+        try {
+            CountDownTimer timer = null;
+
+            final String pathsss = pathofsong.toString();
+            final MediaPlayer mediaplayer = new MediaPlayer();
+            mediaplayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaplayer.reset();
+            mediaplayer.setDataSource(pathsss);
+            mediaplayer.prepare();
+            mediaplayer.start();
+
+            final int dur = mediaplayer.getDuration();
+
+
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
 
     public int getDuration(Uri path)
     {
@@ -203,6 +242,4 @@ public void writeCat(String gen, String songnm, Uri downloaduri)
                 .setInterpolator(new OvershootInterpolator(10.0F))
                 .start();
     }
-
-
 }
