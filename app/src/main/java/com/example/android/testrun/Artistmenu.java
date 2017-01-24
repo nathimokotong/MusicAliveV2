@@ -81,6 +81,13 @@ public class Artistmenu extends AppCompatActivity
                 streamlink = Integer.toString(position);
               viewHolder.setTextSongName(model.getSongName());
                 viewHolder.setImage(link );
+
+                viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(Artistmenu.this,"Hellooo",Toast.LENGTH_SHORT).show();
+                    }
+                });
                // viewHolder.itemClickListener.onItemClick(position);
 
             }
@@ -92,16 +99,17 @@ public class Artistmenu extends AppCompatActivity
     }
 
 
-
+//Castom view holder to make interactions for each card
     public static class FireViewHolder extends  RecyclerView.ViewHolder {
 
         private View mView;
+        CardView cardView;
         ItemClickListener itemClickListener;
 
         public FireViewHolder(View itemView) {
             super(itemView);
-
             mView = itemView;
+            cardView = (CardView)itemView.findViewById(R.id.cardview);
 
         }
 
@@ -120,20 +128,13 @@ public class Artistmenu extends AppCompatActivity
 
 
         }
-        public void showthis()
-        {
-
-
-        }
 
 
 
     }
 
 
-private void retrievedata()
-    //Retrieve data
-    {}
+
 }
 //_____________________________________________________________________________
 
