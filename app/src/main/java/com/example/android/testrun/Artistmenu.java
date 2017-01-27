@@ -74,7 +74,7 @@ public class Artistmenu extends AppCompatActivity
 
         username = preferences.getString("username","not answered");
 
-        streambtn = (ImageButton)findViewById(R.id.btnArtStream);
+
         cardView = (CardView)findViewById(R.id.cardview);
     //Recycler view...............
         recyclerView = (RecyclerView)findViewById(R.id.recycview);
@@ -102,34 +102,21 @@ public class Artistmenu extends AppCompatActivity
                             links = new String[]{Integer.toString(position)};
                             viewHolder.setTextSongName(model.getSongName());
                             viewHolder.setImage(link);
-
-
+                            viewHolder.txtViewlike.setText(model.getLikes());
+                            viewHolder.txtViewDislike.setText(model.getLikes());
 
                             viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     //   Toast.makeText(Artistmenu.this,model.getDownloadu(),Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(Artistmenu.this,Comment.class);
+
+                                    intent.putExtra("Path",model.getDownloadu());
+                                    intent.putExtra("Likes",model.getLikes());
                                     startActivity(intent);
                                 }
                             });
 
-
-                            viewHolder.imageButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
-                                    MotherClass m = new MotherClass();
-                                    streamlink = model.getDownloadu();
-
-
-                                    m.songplaying(streamlink);
-
-                                    //  viewHolder.imageButton.setSelected(!viewHolder.imageButton.isSelected());
-
-
-                                }
-                            });
 
                         }
                     };
@@ -150,61 +137,6 @@ public class Artistmenu extends AppCompatActivity
         });
 
 
-        //________________prevent songs from playing over each other_______________
-
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(final MediaPlayer mediaPlayer)
-            {
-
-
-                IntentFilter iF = new IntentFilter();
-                iF.addAction("com.android.music.metachanged");
-                iF.addAction("com.android.music.playstatechanged");
-                iF.addAction("com.android.music.playbackcomplete");
-                iF.addAction("com.android.music.queuechanged");
-
-
-                new Thread(new Runnable()
-                {
-
-                    @Override
-                    public void run()
-                    {
-
-
-
-                        while(mediaPlayer!=null && mediaPlayer.getCurrentPosition()<mediaPlayer.getDuration())
-                        {
-
-                            //  timeDur.setText(""+ sec);
-
-                            Artistmenu.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-
-
-                                }
-                            });
-
-
-
-                            try {
-                                Thread.sleep(100);
-                            }
-                            catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }).start();
-
-
-            }
-        });
-        //__________________________________
-
-
     }
 
 
@@ -213,7 +145,8 @@ public class Artistmenu extends AppCompatActivity
 
         private View mView;
         CardView cardView;
-        ItemClickListener itemClickListener;
+        TextView txtViewlike;
+        TextView txtViewDislike;
         Uri streamline;
         ImageButton imageButton;
 
@@ -222,7 +155,9 @@ public class Artistmenu extends AppCompatActivity
             mView = itemView;
             cardView = (CardView)itemView.findViewById(R.id.cardview);
             streamline  = Uri.parse("");
-            imageButton = (ImageButton)itemView.findViewById(R.id.btnArtStream);
+
+            txtViewDislike = (TextView)itemView.findViewById(R.id.txtDisikes);
+            txtViewlike = (TextView)itemView.findViewById(R.id.txtLikes);
         }
 
 
@@ -239,13 +174,6 @@ public class Artistmenu extends AppCompatActivity
             Picasso.with(mView.getContext()).load(uri).into(albumpic);
 
 
-        }
-
-        public void play(String Uri,boolean ply)
-        {
-            MotherClass m = new MotherClass();
-
-            m.playCond(Uri,ply);
         }
 
 

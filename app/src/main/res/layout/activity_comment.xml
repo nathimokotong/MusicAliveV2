@@ -13,6 +13,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/recyclay"
         android:layout_height="wrap_content"
         android:layout_below="@+id/laybuttons"
         android:layout_marginTop="10dp"
@@ -40,11 +41,11 @@
             android:text="Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/playbtn"
+            android:id="@+id/playsong"
             android:background="@null"
             android:src="@drawable/ic_play_arrow_black_24dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_above="@+id/txtplay"
+            android:layout_centerInParent="true"  />
 
 
         <TextView
@@ -90,8 +91,38 @@
             android:src="@drawable/ic_record_voice_over_black_24dp"
             android:id="@+id/commentbtn"
             android:layout_gravity="center"
-            android:layout_centerVertical="true"
+            android:layout_below="@+id/textView3"
             android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+        <ImageButton
+            android:background="@drawable/ic_round_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/likecom"
+            android:id="@+id/btnlike"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentEnd="true" />
+
+
+        <ImageButton
+            android:background="@drawable/ic_round_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dislikecom"
+            android:id="@+id/btnDislike"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentStart="true" />
+
 
     </RelativeLayout>
 

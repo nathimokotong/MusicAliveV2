@@ -13,26 +13,29 @@ public class Gendre implements Serializable {
     private String songName;
     private String downloadu;
 private String Email;
+private String likes;
+    private String dislikes;
 
 
 
-    //we can have two constractors
+//we can have two constractors
 
     //_____________________first
-    public Gendre(String d , String m)
+    public Gendre(String d, String m)
     {
         songName = d;
         downloadu = m;
 
     }
     //_____________________secound
-    public Gendre( String email,String songnm, String downloaduri)
+    public Gendre(String email, String songnm, String downloaduri,String like,String dslike)
     {
 
         Email = email;
         songName = songnm;
         downloadu = downloaduri;
-
+        likes = like;
+        dislikes = dslike;
     }
 
     public String getSongName()
@@ -51,5 +54,12 @@ private String Email;
         return Email;
     }
 
+    public String getLikes() {
+        return likes;
+    }
+
+    public String getDislikes() {
+        return dislikes;
+    }
 }
 

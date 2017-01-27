@@ -158,7 +158,7 @@ public class Uploadmusic extends AppCompatActivity  {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                         motherClass.writeCat(cat,songdisplay,douwnloadURI);
-                        motherClass.writeArtist(user.getDisplayName(),user.getEmail(),songdisplay,douwnloadURI);
+                        motherClass.writeArtist(user.getDisplayName(),user.getEmail(),songdisplay,douwnloadURI,"0","0");
 
                     }
                 });

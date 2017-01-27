@@ -24,7 +24,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         super(itemView);
 
         songTxt = (TextView)itemView.findViewById(R.id.songnameID);
-        buttonplay = (ImageButton)itemView.findViewById(R.id.btnArtStream);
+
 
         itemView.setOnClickListener(this);
     }

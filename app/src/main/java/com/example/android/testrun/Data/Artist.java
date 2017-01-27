@@ -11,6 +11,24 @@ public class Artist implements Serializable {
     public String downloadu;
     public String email;
     public   String songName;
+    public String likes;
+    public String dislikes;
+
+    public String getLikes() {
+        return likes;
+    }
+
+    public void setLikes(String likes) {
+        this.likes = likes;
+    }
+
+    public String getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(String dislikes) {
+        this.dislikes = dislikes;
+    }
 
     public String getDownloadu() {
         return downloadu;

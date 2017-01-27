@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="210dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="12dp"
     android:id="@+id/cardview"
@@ -11,18 +11,19 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+
         >
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/commentsID"
-            android:lines="88"
             android:text="song to be displayed here"
             android:layout_below="@+id/txtName"
-            android:textSize="15dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"
             />
 
         <TextView

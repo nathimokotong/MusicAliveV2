@@ -249,12 +249,13 @@ public void writeCat(String gen, String songnm, Uri downloaduri)
 
 }
 
-    public void writeArtist(String name, String email,String songnm, Uri downloaduri)
+    public void writeArtist(String name, String email,String songnm, Uri downloaduri,String likes,String dislikes )
     {
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
         DatabaseReference usersRef = ref.child("Artist").child(name);
-        usersRef.push().setValue(new Gendre(email,songnm,downloaduri.toString()));
+        usersRef.push().setValue(new Gendre(email,songnm,downloaduri.toString(),likes,dislikes));
 
     }
 
