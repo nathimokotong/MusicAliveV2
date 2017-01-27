@@ -1,8 +1,10 @@
 package com.example.android.testrun;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +34,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 
 public class Artistmenu extends AppCompatActivity
@@ -48,8 +53,9 @@ public class Artistmenu extends AppCompatActivity
     ImageButton streambtn;
     String username;
     SharedPreferences preferences;
-
+    String[] links;
     CardView cardView;
+    boolean isplaying = false;
     private MediaPlayer mediaPlayer;
     private TelephonyManager telephonyManager;
     private PhoneStateListener phoneStateListener;
@@ -68,8 +74,6 @@ public class Artistmenu extends AppCompatActivity
 
         username = preferences.getString("username","not answered");
 
-        Toast.makeText(Artistmenu.this,"Loading your songs may take a while, please be patient!",Toast.LENGTH_LONG).show();
-
         streambtn = (ImageButton)findViewById(R.id.btnArtStream);
         cardView = (CardView)findViewById(R.id.cardview);
     //Recycler view...............
@@ -80,36 +84,70 @@ public class Artistmenu extends AppCompatActivity
         //send a Query to the database
         reference = FirebaseDatabase.getInstance().getReference("Artist").child(username); //fix this in time
 
-        fireAdapter =  new FirebaseRecyclerAdapter<Artist, FireViewHolder>(Artist.class,R.layout.design_row_cardview,FireViewHolder.class,reference)
-        {
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() == null)
+                {
+                    Toast.makeText(Artistmenu.this,"No Data to display, add song(s)",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    fireAdapter =  new FirebaseRecyclerAdapter<Artist, FireViewHolder>(Artist.class,R.layout.design_row_cardview,FireViewHolder.class,reference)
+                    {
+
+                        @Override
+                        protected void populateViewHolder(final FireViewHolder viewHolder, final Artist model, final int position) {
+
+                            links = new String[]{Integer.toString(position)};
+                            viewHolder.setTextSongName(model.getSongName());
+                            viewHolder.setImage(link);
+
+
+
+                            viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    //   Toast.makeText(Artistmenu.this,model.getDownloadu(),Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(Artistmenu.this,Comment.class);
+                                    startActivity(intent);
+                                }
+                            });
+
+
+                            viewHolder.imageButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    MotherClass m = new MotherClass();
+                                    streamlink = model.getDownloadu();
+
+
+                                    m.songplaying(streamlink);
+
+                                    //  viewHolder.imageButton.setSelected(!viewHolder.imageButton.isSelected());
+
+
+                                }
+                            });
+
+                        }
+                    };
+
+                    recyclerView.setAdapter(fireAdapter);
+
+
+                }
+            }
 
             @Override
-            protected void populateViewHolder(final FireViewHolder viewHolder, Artist model, int position) {
+            public void onCancelled(DatabaseError databaseError)
+            {
 
-                streamlink = model.getDownloadu();
-              viewHolder.setTextSongName(model.getSongName());
-                viewHolder.setImage(link );
-
-                viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(Artistmenu.this,"Hellooo",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-                viewHolder.imageButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        viewHolder.play(streamlink);
-                    }
-                });
+                Toast.makeText(Artistmenu.this,"Please load data",Toast.LENGTH_LONG).show();
 
             }
-        };
-
-         recyclerView.setAdapter(fireAdapter);
+        });
 
 
         //________________prevent songs from playing over each other_______________
@@ -203,11 +241,11 @@ public class Artistmenu extends AppCompatActivity
 
         }
 
-        public void play(String Uri)
+        public void play(String Uri,boolean ply)
         {
             MotherClass m = new MotherClass();
 
-            m.songplaying(Uri);
+            m.playCond(Uri,ply);
         }
 
 

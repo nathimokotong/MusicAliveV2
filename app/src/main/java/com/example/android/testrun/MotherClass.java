@@ -192,7 +192,54 @@ public class MotherClass {
         return x;
     }
 
+    //_____________________-temp
+    public void playCond(String pathofsong, Boolean t)
+    {
 
+
+        try {
+            CountDownTimer timer = null;
+
+            final String pathsss = pathofsong.toString();
+            final MediaPlayer mediaplayer = new MediaPlayer();
+            mediaplayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaplayer.reset();
+            mediaplayer.setDataSource(pathsss);
+            mediaplayer.prepare();
+
+
+            final int dur = mediaplayer.getDuration();
+
+            if (t = false)
+            {  mediaplayer.start();
+            }
+            if(t = true)
+            {
+                mediaplayer.pause();
+            }
+
+
+
+
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+    //write to database
 public void writeCat(String gen, String songnm, Uri downloaduri)
 {
     final FirebaseDatabase database = FirebaseDatabase.getInstance();

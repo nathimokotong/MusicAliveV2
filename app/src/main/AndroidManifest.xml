@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/mylogofront"
@@ -28,7 +27,8 @@
         <activity
             android:name=".SignIN"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".Uploadmusic"
             android:label="Upload Music"
@@ -47,11 +47,16 @@
             android:name=".MusicGallery"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Artistmenu"
+        <activity
+            android:name=".Artistmenu"
             android:label="My music"
             android:parentActivityName=".Uploadmusic"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Comment"
+            android:label="@string/title_activity_comment"
             android:screenOrientation="portrait"
-            />
+            ></activity>
     </application>
 
 </manifest>
