@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/commentsID"
             android:text="song to be displayed here"
-            android:layout_below="@+id/txtName"
+            android:layout_below="@+id/txtNamehere"
             android:textSize="20dp"
             android:textStyle="bold"
             android:layout_marginTop="5dp"
@@ -31,7 +31,7 @@
             android:textSize="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtName"
+            android:id="@+id/txtNamehere"
             android:layout_alignParentTop="true"
             android:layout_alignStart="@+id/txtLikes" />
 

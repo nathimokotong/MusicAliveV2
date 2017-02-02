@@ -159,6 +159,7 @@ public class Uploadmusic extends AppCompatActivity  {
 
                         motherClass.writeCat(cat,songdisplay,douwnloadURI);
                         motherClass.writeArtist(user.getDisplayName(),user.getEmail(),songdisplay,douwnloadURI,"0","0");
+//                        motherClass.writeComments(songdisplay);
 
                     }
                 });

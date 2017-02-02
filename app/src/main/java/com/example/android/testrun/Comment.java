@@ -70,11 +70,8 @@ public class Comment extends AppCompatActivity {
                 startActivity(i);
 
 
-
-
             }
         });
-
 
         //like button
         likebutton.setOnClickListener(new View.OnClickListener()

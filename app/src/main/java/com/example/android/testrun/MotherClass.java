@@ -259,6 +259,14 @@ public void writeCat(String gen, String songnm, Uri downloaduri)
 
     }
 
+    public void writeComments(String songname)
+    {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+        DatabaseReference usersRef = ref.child("Comments").child(songname);
+        usersRef.push().setValue(new Gendre(songname));
+    }
+
 
 
 

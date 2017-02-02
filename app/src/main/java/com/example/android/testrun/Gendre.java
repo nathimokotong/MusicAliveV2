@@ -20,6 +20,13 @@ private String likes;
 
 //we can have two constractors
 
+    public Gendre(String d)
+    {
+        songName = d;
+
+
+    }
+
     //_____________________first
     public Gendre(String d, String m)
     {

@@ -82,7 +82,7 @@ public class Artistmenu extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //send a Query to the database
-        reference = FirebaseDatabase.getInstance().getReference("Artist").child(username); //fix this in time
+        reference = FirebaseDatabase.getInstance().getReference("Artist").child(username);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
